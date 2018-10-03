@@ -1,2 +1,6 @@
 # pyenv info
 .python-version
+
+# pipenv info
+Pipfile
+Pipfile.lock
