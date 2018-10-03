@@ -1,5 +1,4 @@
-import json
-import sys, os
+import json, sys, os
 from memory_profiler import profile
 
 class ReadFiles:
@@ -16,6 +15,7 @@ if __name__ == '__main__':
     # path = '../files/sample.json'
     args = sys.argv
 
+    # $ python3 main.py ../files/sample.json
     if len(args) != 2:
         print("Incorrect args. ($ python3 main.py <File_path.json>)")
         sys.exit()
