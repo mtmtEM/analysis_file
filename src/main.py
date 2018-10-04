@@ -1,5 +1,6 @@
-import json, sys, os
+import json, sys, os, ast
 import sql
+from time import sleep
 from memory_profiler import profile
 
 class ReadFiles:
@@ -7,35 +8,39 @@ class ReadFiles:
         self.path = path
         self.db = dbname
 
-    @profile
+    # @profile
     def read_data(self):
         db = sql.DBconnect(self.db)
         db.creat_database()
-        logs = []
+        db.delete_database()
         id = 1
+        with open(self.path, 'r', encoding='utf-8') as f:
+            for line in f:
+                # 初期化
+                logs = []
+                line = line.replace("\\n", "").replace("\\", "")
+                # str -> dict 変換
+                data = ast.literal_eval(line)
 
-        with open(self.path) as f:
-            data = json.load(f)
+                logs.append(id)
+                logs.append(data["eventid"])
+                logs.append(data["ttylog"])
+                logs.append(data["timestamp"])
+                logs.append(data["message"])
+                logs.append(data["isError"])
+                logs.append(data["src_ip"])
+                logs.append(data["session"])
+                logs.append(data["sensor"])
 
-            logs.append(id)
-            logs.append(data["eventid"])
-            logs.append(data["ttylog"])
-            logs.append(data["timestamp"])
-            logs.append(data["message"])
-            logs.append(data["isError"])
-            logs.append(data["src_ip"])
-            logs.append(data["session"])
-            logs.append(data["sensor"])
-
-            db.update_database(logs)
-            id += 1
+                db.update_database(logs)
+                id += 1
 
         db.show_database()
 
 if __name__ == '__main__':
     args = sys.argv
 
-    # $ python3 main.py ../logs/sample.json ../db/sample.db
+    # $ python main.py ../logs/sample.json ../db/sample.db
     if len(args) != 3:
         print("Incorrect args. ($ python3 main.py <File_path.json> <DBname>)")
         sys.exit()
