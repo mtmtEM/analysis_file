@@ -6,4 +6,4 @@ Pipfile
 Pipfile.lock
 
 # __pycache__
-py/__pycache__/*.*
+src/__pycache__/*.*
