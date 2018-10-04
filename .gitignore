@@ -4,3 +4,6 @@
 # pipenv info
 Pipfile
 Pipfile.lock
+
+# __pycache__
+py/__pycache__/*.*
